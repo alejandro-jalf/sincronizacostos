@@ -55,10 +55,12 @@ public class Movimientos {
                 DECLARE @Almacen1 NVARCHAR(2) = '12';
                 
                 SELECT
-                    Documento, Referencia, NombreTercero, D.Articulo, D.Nombre, CantidadRegular, DescripcionAlmacen, Fecha, Hora, CostoUnitario, L.UltimoCosto, D.Almacen,
-                    Diferencia = ABS(D.CostoUnitario-L.UltimoCosto)
+                    Documento, Referencia, NombreTercero, D.Articulo, D.Nombre, DescripcionAlmacen, Fecha, Hora, CostoUnitario, L.UltimoCosto, D.Almacen,
+                    Diferencia = ABS(D.CostoUnitario-L.UltimoCosto), D.CantidadRegularUC, L.UnidadCompra, CantidadRegular, L.UnidadVenta,
+                    Relacion = CAST(CAST(L.FactorCompra AS INT) AS NVARCHAR) + '/' + L.UnidadCompra + ' - ' + CAST(CAST(L.FactorVenta AS INT) AS NVARCHAR) + '/' + L.UnidadVenta,
+                    D.NombreCajero, D.Observaciones, D.Caja
                 FROM QVDEMovAlmacen D
-                LEFT JOIN QVExistencias L ON D.Articulo = L.Articulo AND @Tienda = L.Tienda AND (@Almacen1 = L.Almacen OR @Almacen2 = L.Almacen)
+                LEFT JOIN QVExistencias L ON D.Articulo = L.Articulo AND D.Tienda = L.Tienda AND D.Almacen = L.Almacen
                 WHERE D.Fecha = @Fecha AND D.TipoDocumento IN ('C', 'E') AND (D.Almacen = @Almacen1 OR D.Almacen = @Almacen2)
                 ORDER BY Documento DESC, Fecha, Hora; """
             );
@@ -75,9 +77,16 @@ public class Movimientos {
                 row.put("Hora", resultSet.getTimestamp("Hora"));
                 row.put("CostoUnitario", resultSet.getDouble("CostoUnitario"));
                 row.put("UltimoCosto", resultSet.getDouble("UltimoCosto"));
-                row.put("CantidadRegular", resultSet.getDouble("CantidadRegular"));
                 row.put("Almacen", resultSet.getDouble("Almacen"));
                 row.put("Diferencia", resultSet.getDouble("Diferencia"));
+                row.put("CantidadRegularUC", resultSet.getDouble("CantidadRegularUC"));
+                row.put("UnidadCompra", resultSet.getString("UnidadCompra"));
+                row.put("CantidadRegular", resultSet.getDouble("CantidadRegular"));
+                row.put("UnidadVenta", resultSet.getString("UnidadVenta"));
+                row.put("Relacion", resultSet.getString("Relacion"));
+                row.put("NombreCajero", resultSet.getString("NombreCajero"));
+                row.put("Observaciones", resultSet.getString("Observaciones"));
+                row.put("Caja", resultSet.getString("Caja"));
                 
                 data.put(row);
             }

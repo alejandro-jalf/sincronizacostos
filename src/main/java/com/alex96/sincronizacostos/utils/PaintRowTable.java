@@ -33,7 +33,6 @@ public class PaintRowTable extends DefaultTableCellRenderer {
         
 //        if ((column == 5 || column == 11) && pedido != cajas) setBackground(new Color(255, 239, 100));
 //        if (column == 17 && diferencia < 0) setBackground(new Color(255, 100, 100));
-        if (column == 7) setBackground(new Color(144, 255, 100));
         
         if (value instanceof JButton) {
             JButton btn =  (JButton) value;

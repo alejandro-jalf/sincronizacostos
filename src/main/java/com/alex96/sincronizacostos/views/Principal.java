@@ -10,12 +10,10 @@ import com.alex96.sincronizacostos.utils.PaintRowTable;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -62,9 +60,8 @@ public class Principal extends javax.swing.JFrame {
     
     private void setIniComponents() {
         btnSincroniza.setEnabled(false);
-        cp = new ControllerPrincipal(modelTable, tableMovimientos);
+        cp = new ControllerPrincipal(modelTable, tableMovimientos, this);
     }
-    
     
     private void setTable() {
         // tableMovimientos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

@@ -8,6 +8,7 @@ import com.alex96.sincronizacostos.Models.Movimiento;
 import com.alex96.sincronizacostos.Models.Movimientos;
 import com.alex96.sincronizacostos.utils.Conexion;
 import com.alex96.sincronizacostos.utils.MessagesResult;
+import com.alex96.sincronizacostos.views.Details;
 import com.alex96.sincronizacostos.views.Principal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +44,8 @@ public class ControllerPrincipal {
     private JTable tableMovimientos;
     private ArrayList<ControllerArticulos> dataArticles;
 
-    public ControllerPrincipal(DefaultTableModel model, JTable tableMovimientos) {
+    public ControllerPrincipal(DefaultTableModel model, JTable tableMovimientos, Principal principal) {
+        this.principal = principal;
         conexion = new Conexion();
         controllerArticulos = new ControllerArticulos();
         controllerMovimientos = new ControllerMovimientos();
@@ -68,7 +70,7 @@ public class ControllerPrincipal {
                 rowObject[5] = formatFecha.format(movimiento.getFecha());
                 rowObject[6] = formatHora.format(movimiento.getHora());
                 rowObject[7] = getButtonDelete(movimiento.getDocumento());
-                rowObject[8] = getButtonOpen(movimiento.getDocumento());
+                rowObject[8] = getButtonOpen(movimiento.getDocumento(), movimiento);
                 model.addRow(rowObject);
             }
             tableMovimientos.setModel(model);
@@ -87,16 +89,25 @@ public class ControllerPrincipal {
         return btnDelete;
     }
     
-    private JButton getButtonOpen(String Documento) {
+    private JButton getButtonOpen(String Documento, Movimiento movimiento) {
         JButton btnDelete = new JButton();
         btnDelete.setIcon(new ImageIcon(getClass().getResource("/contents/openfolderb25x25.png")));
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(principal, "Movimiento abierto: " + Documento, "Abriendo", JOptionPane.INFORMATION_MESSAGE);
+                openDetails(movimiento);
             }
         });
         return btnDelete;
+    }
+    
+    private void openDetails(Movimiento movimiento) {
+        Details details = new Details(movimiento, principal);
+        details.setTitle(movimiento.getDocumento());
+        details.setLocationRelativeTo(null);
+        details.setSize(1300, 700);
+        details.setVisible(true);
+        principal.setEnabled(false);
     }
     
     private void cleanTable() {
@@ -165,7 +176,10 @@ public class ControllerPrincipal {
                 rowData.getString("DescripcionAlmacen"),
                 (Date) rowData.get("Fecha"),
                 (Timestamp) rowData.get("Hora"),
-                null
+                null,
+                rowData.getString("Caja"),
+                rowData.getString("NombreCajero"),
+                rowData.getString("Observaciones")
             );
         }
     }
@@ -189,7 +203,11 @@ public class ControllerPrincipal {
             rowData.getDouble("UltimoCosto"),
             rowData.getInt("Almacen"),
             (Date) rowData.get("Fecha"),
-            (Timestamp) rowData.get("Hora")
+            (Timestamp) rowData.get("Hora"),
+            rowData.getString("Relacion"),
+            rowData.getString("UnidadCompra"),
+            rowData.getString("UnidadVenta"),
+            rowData.getDouble("CantidadRegularUC")
         );
         if (!existDocument) {
             dataArticles.add(controllerTemp);

@@ -24,7 +24,10 @@ public class ControllerArticulos {
         this.listArticulos = listArticulos;
     }
     
-    public void addArticulo(String Documento, String Articulo, String Nombre, double Costo, double CantidadRegular, double UltimoCosto, int Almacen, Date Fecha, Date Hora) {
+    public void addArticulo(
+        String Documento, String Articulo, String Nombre, double Costo, double CantidadRegular, double UltimoCosto, int Almacen, Date Fecha, Date Hora,
+        String Relacion, String UnidadCompra, String UnidadVenta, double CantidadRegularUC
+    ) {
         articulo = new Articulo();
         articulo.setDocumento(Documento);
         articulo.setArticulo(Articulo);
@@ -35,6 +38,10 @@ public class ControllerArticulos {
         articulo.setAlmacen(Almacen);
         articulo.setFecha(Fecha);
         articulo.setHora(Hora);
+        articulo.setRelacion(Relacion);
+        articulo.setUnidadCompra(UnidadCompra);
+        articulo.setUnidadVenta(UnidadVenta);
+        articulo.setCantidadRegularUC(CantidadRegularUC);
         this.listArticulos.add(articulo);
     }
     

@@ -15,6 +15,9 @@ public class Movimiento {
     private String Documento = null;
     private String Referencia = null;
     private String NombreTercero = null;
+    private String Caja = null;
+    private String NombreCajero = null;
+    private String Observaciones = null;
     private int CountArticulos = 0;
     private String Almacen = null;
     private Date Fecha = null;
@@ -83,5 +86,29 @@ public class Movimiento {
 
     public void setListArticulos(ArrayList<Articulo> ListArticulos) {
         this.ListArticulos = ListArticulos;
+    }
+
+    public String getCaja() {
+        return Caja;
+    }
+
+    public void setCaja(String Caja) {
+        this.Caja = Caja;
+    }
+
+    public String getNombreCajero() {
+        return NombreCajero;
+    }
+
+    public void setNombreCajero(String NombreCajero) {
+        this.NombreCajero = NombreCajero;
+    }
+
+    public String getObservaciones() {
+        return Observaciones;
+    }
+
+    public void setObservaciones(String Observaciones) {
+        this.Observaciones = Observaciones;
     }
 }

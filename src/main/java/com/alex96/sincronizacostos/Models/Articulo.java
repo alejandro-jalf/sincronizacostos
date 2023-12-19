@@ -14,8 +14,12 @@ public class Articulo { //
     private String Documento = null;
     private String Articulo = null;
     private String Nombre = null;
+    private String UnidadCompra = null;
+    private String UnidadVenta = null;
+    private String Relacion = null;
     private double Costo = 0;
     private double CantidadRegular = 0;
+    private double CantidadRegularUC = 0;
     private double UltimoCosto = 0;
     private int Almacen = 0;
     private Date Fecha = null;
@@ -91,5 +95,37 @@ public class Articulo { //
 
     public void setDocumento(String Documento) {
         this.Documento = Documento;
+    }
+
+    public String getUnidadCompra() {
+        return UnidadCompra;
+    }
+
+    public void setUnidadCompra(String UnidadCompra) {
+        this.UnidadCompra = UnidadCompra;
+    }
+
+    public String getUnidadVenta() {
+        return UnidadVenta;
+    }
+
+    public void setUnidadVenta(String UnidadVenta) {
+        this.UnidadVenta = UnidadVenta;
+    }
+
+    public double getCantidadRegularUC() {
+        return CantidadRegularUC;
+    }
+
+    public void setCantidadRegularUC(double CantidadRegularUUC) {
+        this.CantidadRegularUC = CantidadRegularUUC;
+    }
+
+    public String getRelacion() {
+        return Relacion;
+    }
+
+    public void setRelacion(String Relacion) {
+        this.Relacion = Relacion;
     }
 }

@@ -37,7 +37,6 @@ public class HeadersTable implements TableCellRenderer {
         jcomponent.setOpaque(true);
         jcomponent.setBackground( new Color(65,65,65) );
         jcomponent.setForeground(Color.WHITE);
-//        jcomponent.setBackground(new Color(7, 8, 19));
         jcomponent.setToolTipText("Lista de articulos");
         jcomponent.setFont(new Font("Arial", Font.PLAIN, 15));
         

@@ -24,7 +24,8 @@ public class ControllerMovimientos {
     }
     
     public void addMovimiento(
-        String Documento, String Referencia, String NombreTercero, int CountArticulos, String Almacen, Date Fecha, Date Hora, ArrayList<Articulo> ListArticulos
+        String Documento, String Referencia, String NombreTercero, int CountArticulos, String Almacen, Date Fecha, Date Hora, ArrayList<Articulo> ListArticulos,
+        String Caja, String NombreCajero, String Observaciones
     ) {
         movimiento = new Movimiento();
         movimiento.setDocumento(Documento);
@@ -35,6 +36,9 @@ public class ControllerMovimientos {
         movimiento.setFecha(Fecha);
         movimiento.setHora(Hora);
         movimiento.setListArticulos(ListArticulos);
+        movimiento.setCaja(Caja);
+        movimiento.setNombreCajero(NombreCajero);
+        movimiento.setObservaciones(Observaciones);
         listMovimientos.add(movimiento);
     }
     
