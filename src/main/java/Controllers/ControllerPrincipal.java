@@ -43,8 +43,10 @@ public class ControllerPrincipal {
     private DefaultTableModel model;
     private JTable tableMovimientos;
     private ArrayList<ControllerArticulos> dataArticles;
+    private JButton btnSincroniza;
 
-    public ControllerPrincipal(DefaultTableModel model, JTable tableMovimientos, Principal principal) {
+    public ControllerPrincipal(DefaultTableModel model, JTable tableMovimientos, Principal principal, JButton btnSincroniza) {
+        this.btnSincroniza = btnSincroniza;
         this.principal = principal;
         conexion = new Conexion();
         controllerArticulos = new ControllerArticulos();
@@ -56,8 +58,13 @@ public class ControllerPrincipal {
     }
     
     public void loadTable(String fecha) {
-        if (loadMoves(fecha))
+        if (loadMoves(fecha)) {
             fillTable();
+            btnSincroniza.setEnabled(true);
+        } else {
+            cleanTable();
+            btnSincroniza.setEnabled(false);
+        }
     }
     
     private void fillTable() {

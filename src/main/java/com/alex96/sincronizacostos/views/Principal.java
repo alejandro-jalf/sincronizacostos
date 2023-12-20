@@ -66,7 +66,7 @@ public class Principal extends javax.swing.JFrame {
     
     private void setIniComponents() {
         btnSincroniza.setEnabled(false);
-        cp = new ControllerPrincipal(modelTable, tableMovimientos, this);
+        cp = new ControllerPrincipal(modelTable, tableMovimientos, this, btnSincroniza);
     }
     
     private void setTable() {
