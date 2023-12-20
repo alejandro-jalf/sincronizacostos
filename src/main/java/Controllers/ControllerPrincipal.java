@@ -56,25 +56,28 @@ public class ControllerPrincipal {
     }
     
     public void loadTable(String fecha) {
-        if (loadMoves(fecha)) {
-            cleanTable();
-            SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/YYYY");
-            SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss a");
-            for (int fila = 0; fila < controllerMovimientos.getSize(); fila++) {
-                movimiento = controllerMovimientos.getMovimiento(fila);
-                rowObject[0] = movimiento.getDocumento();
-                rowObject[1] = movimiento.getReferencia();
-                rowObject[2] = movimiento.getNombreTercero();
-                rowObject[3] = String.valueOf(movimiento.getCountArticulos());
-                rowObject[4] = movimiento.getAlmacen();
-                rowObject[5] = formatFecha.format(movimiento.getFecha());
-                rowObject[6] = formatHora.format(movimiento.getHora());
-                rowObject[7] = getButtonDelete(movimiento.getDocumento());
-                rowObject[8] = getButtonOpen(movimiento.getDocumento(), movimiento);
-                model.addRow(rowObject);
-            }
-            tableMovimientos.setModel(model);
+        if (loadMoves(fecha))
+            fillTable();
+    }
+    
+    private void fillTable() {
+        cleanTable();
+        SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/YYYY");
+        SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss a");
+        for (int fila = 0; fila < controllerMovimientos.getSize(); fila++) {
+            movimiento = controllerMovimientos.getMovimiento(fila);
+            rowObject[0] = movimiento.getDocumento();
+            rowObject[1] = movimiento.getReferencia();
+            rowObject[2] = movimiento.getNombreTercero();
+            rowObject[3] = String.valueOf(movimiento.getCountArticulos());
+            rowObject[4] = movimiento.getAlmacen();
+            rowObject[5] = formatFecha.format(movimiento.getFecha());
+            rowObject[6] = formatHora.format(movimiento.getHora());
+            rowObject[7] = getButtonDelete(movimiento.getDocumento());
+            rowObject[8] = getButtonOpen(movimiento);
+            model.addRow(rowObject);
         }
+        tableMovimientos.setModel(model);
     }
     
     private JButton getButtonDelete(String Documento) {
@@ -83,13 +86,26 @@ public class ControllerPrincipal {
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showConfirmDialog(principal, "¿Quiere eliminar el movimiento " + Documento + " de la lista?", "Descartando Movimiento", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+                discardMove(Documento);
             }
         });
         return btnDelete;
     }
     
-    private JButton getButtonOpen(String Documento, Movimiento movimiento) {
+    public boolean discardMove(String Documento) {
+        int option = JOptionPane.showConfirmDialog(principal, "¿Quiere eliminar el movimiento " + Documento + " de la lista?", "Descartando Movimiento", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (option == JOptionPane.OK_OPTION) {
+            if (!controllerMovimientos.removeMovimiento(Documento)) {
+                JOptionPane.showMessageDialog(principal, "No se pudo eliminar el documento", "Fallo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            fillTable();
+            return true;
+        }
+        return false;
+    }
+    
+    private JButton getButtonOpen(Movimiento movimiento) {
         JButton btnDelete = new JButton();
         btnDelete.setIcon(new ImageIcon(getClass().getResource("/contents/openfolderb25x25.png")));
         btnDelete.addActionListener(new ActionListener() {
@@ -102,11 +118,11 @@ public class ControllerPrincipal {
     }
     
     private void openDetails(Movimiento movimiento) {
-        Details details = new Details(movimiento, principal);
+        Details details = new Details(movimiento, principal, this);
         details.setTitle(movimiento.getDocumento());
-        details.setLocationRelativeTo(null);
-        details.setSize(1300, 700);
+        details.setSize(1500, 700);
         details.setVisible(true);
+        details.setLocationRelativeTo(null);
         principal.setEnabled(false);
     }
     
@@ -207,7 +223,9 @@ public class ControllerPrincipal {
             rowData.getString("Relacion"),
             rowData.getString("UnidadCompra"),
             rowData.getString("UnidadVenta"),
-            rowData.getDouble("CantidadRegularUC")
+            rowData.getDouble("CantidadRegularUC"),
+            rowData.getDouble("CostoUnitarioNetoUC"),
+            rowData.getDouble("CostoValorNeto")
         );
         if (!existDocument) {
             dataArticles.add(controllerTemp);

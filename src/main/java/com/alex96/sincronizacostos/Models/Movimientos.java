@@ -55,10 +55,10 @@ public class Movimientos {
                 DECLARE @Almacen1 NVARCHAR(2) = '12';
                 
                 SELECT
-                    Documento, Referencia, NombreTercero, D.Articulo, D.Nombre, DescripcionAlmacen, Fecha, Hora, CostoUnitario, L.UltimoCosto, D.Almacen,
+                    Documento, Referencia, NombreTercero, D.Articulo, D.Nombre, DescripcionAlmacen, Fecha, Hora, CostoUnitarioNeto, L.UltimoCosto, D.Almacen,
                     Diferencia = ABS(D.CostoUnitario-L.UltimoCosto), D.CantidadRegularUC, L.UnidadCompra, CantidadRegular, L.UnidadVenta,
                     Relacion = CAST(CAST(L.FactorCompra AS INT) AS NVARCHAR) + '/' + L.UnidadCompra + ' - ' + CAST(CAST(L.FactorVenta AS INT) AS NVARCHAR) + '/' + L.UnidadVenta,
-                    D.NombreCajero, D.Observaciones, D.Caja
+                    D.NombreCajero, D.Observaciones, D.Caja, D.CostoUnitarioNetoUC, D.CostoValorNeto
                 FROM QVDEMovAlmacen D
                 LEFT JOIN QVExistencias L ON D.Articulo = L.Articulo AND D.Tienda = L.Tienda AND D.Almacen = L.Almacen
                 WHERE D.Fecha = @Fecha AND D.TipoDocumento IN ('C', 'E') AND (D.Almacen = @Almacen1 OR D.Almacen = @Almacen2)
@@ -75,7 +75,7 @@ public class Movimientos {
                 row.put("DescripcionAlmacen", resultSet.getString("DescripcionAlmacen"));
                 row.put("Fecha", resultSet.getDate("Fecha"));
                 row.put("Hora", resultSet.getTimestamp("Hora"));
-                row.put("CostoUnitario", resultSet.getDouble("CostoUnitario"));
+                row.put("CostoUnitario", resultSet.getDouble("CostoUnitarioNeto"));
                 row.put("UltimoCosto", resultSet.getDouble("UltimoCosto"));
                 row.put("Almacen", resultSet.getDouble("Almacen"));
                 row.put("Diferencia", resultSet.getDouble("Diferencia"));
@@ -87,6 +87,8 @@ public class Movimientos {
                 row.put("NombreCajero", resultSet.getString("NombreCajero"));
                 row.put("Observaciones", resultSet.getString("Observaciones"));
                 row.put("Caja", resultSet.getString("Caja"));
+                row.put("CostoUnitarioNetoUC", resultSet.getDouble("CostoUnitarioNetoUC"));
+                row.put("CostoValorNeto", resultSet.getDouble("CostoValorNeto"));
                 
                 data.put(row);
             }

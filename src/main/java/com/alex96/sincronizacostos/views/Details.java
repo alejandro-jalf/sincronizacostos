@@ -6,20 +6,18 @@ package com.alex96.sincronizacostos.views;
 
 import Controllers.ControllerArticulos;
 import Controllers.ControllerMovimientos;
+import Controllers.ControllerPrincipal;
 import com.alex96.sincronizacostos.Models.Articulo;
 import com.alex96.sincronizacostos.Models.Movimiento;
 import com.alex96.sincronizacostos.utils.HeadersTable;
 import com.alex96.sincronizacostos.utils.PaintRowTable;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -33,23 +31,29 @@ public class Details extends javax.swing.JFrame {
     private Principal principal;
     private Movimiento movimiento = null;
     private Articulo articulo;
-    private ControllerMovimientos controllerMovimientos;
-    private ControllerArticulos controllerArticulos;
-    private String[] row = new String[8];
+//    private ControllerMovimientos controllerMovimientos;
+//    private ControllerArticulos controllerArticulos;
+    private ControllerPrincipal controllerPrincipal;
+    private String[] row = new String[10];
     
     /**
      * Creates new form Details
      * @param movimiento Instancia de la clase de Movimiento
      * @param principal Instancia de la clase de Principal
      */
-    public Details(Movimiento movimiento, Principal principal) {
+    public Details(Movimiento movimiento, Principal principal, ControllerPrincipal controllerPrincipal) {
         initComponents();
+        this.controllerPrincipal = controllerPrincipal;
         this.principal = principal;
         this.movimiento = movimiento;
         this.details = this;
         setConfigWindow();
         setTable();
         showData();
+    }
+    
+    public Details() {
+        
     }
     
     private void setConfigWindow() {
@@ -63,6 +67,11 @@ public class Details extends javax.swing.JFrame {
                     details.dispose();
                 }
         });
+        try {
+            this.setIconImage(new ImageIcon(getClass().getResource("/contents/logo1.png")).getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private void setTable() {
@@ -79,9 +88,11 @@ public class Details extends javax.swing.JFrame {
         modelTable.addColumn("Relacion");
         modelTable.addColumn("Cantidad");
         modelTable.addColumn("Unidad");
+        modelTable.addColumn("Costo/Pza");
         modelTable.addColumn("Cajas");
         modelTable.addColumn("Unidad");
-        modelTable.addColumn("Costo");
+        modelTable.addColumn("Costo/Cja");
+        modelTable.addColumn("Costo Total");
         
         tableArticulos.setModel(modelTable);
         
@@ -95,9 +106,11 @@ public class Details extends javax.swing.JFrame {
         tableArticulos.getColumnModel().getColumn(2).setPreferredWidth(80); // Relacion
         tableArticulos.getColumnModel().getColumn(3).setPreferredWidth(60); // Cantidad
         tableArticulos.getColumnModel().getColumn(4).setPreferredWidth(40); // Unidad
+        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(40); // Costo Pza
         tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(60); // Cajas
         tableArticulos.getColumnModel().getColumn(6).setPreferredWidth(40); // Unidad
-        tableArticulos.getColumnModel().getColumn(7).setPreferredWidth(80); // Costo
+        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(60); // Costo Cja
+        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(60); // Costo Total
     }
     
     private void showData() {
@@ -129,9 +142,11 @@ public class Details extends javax.swing.JFrame {
             row[2] = articulo.getRelacion();
             row[3] = String.valueOf(articulo.getCantidadRegular());
             row[4] = articulo.getUnidadVenta();
-            row[5] = String.valueOf(articulo.getCantidadRegularUC());
-            row[6] = articulo.getUnidadCompra();
-            row[7] = String.valueOf(articulo.getCosto());
+            row[5] = String.valueOf(articulo.getCosto());
+            row[6] = String.valueOf(articulo.getCantidadRegularUC());
+            row[7] = articulo.getUnidadCompra();
+            row[8] = String.valueOf(articulo.getCostoUnitarioNetoUC());
+            row[9] = String.valueOf(articulo.getCostoValorNeto());
             modelTable.addRow(row);
         }
         tableArticulos.setModel(modelTable);
@@ -149,21 +164,25 @@ public class Details extends javax.swing.JFrame {
         modelTable.addColumn("Relacion");
         modelTable.addColumn("Cantidad");
         modelTable.addColumn("Unidad");
+        modelTable.addColumn("Costo/Pza");
         modelTable.addColumn("Cajas");
         modelTable.addColumn("Unidad");
-        modelTable.addColumn("Costo");
+        modelTable.addColumn("Costo/Cja");
+        modelTable.addColumn("Costo Total");
         
         tableArticulos.setModel(modelTable);
         
         tableArticulos.setRowHeight(30);
-        tableArticulos.getColumnModel().getColumn(0).setPreferredWidth(60); // Documento
-        tableArticulos.getColumnModel().getColumn(1).setPreferredWidth(250); // Referencia
-        tableArticulos.getColumnModel().getColumn(2).setPreferredWidth(80); // Nombre Tercero
-        tableArticulos.getColumnModel().getColumn(3).setPreferredWidth(60); // Articulos
-        tableArticulos.getColumnModel().getColumn(4).setPreferredWidth(40); // Almacen
-        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(60); // Fecha
-        tableArticulos.getColumnModel().getColumn(6).setPreferredWidth(40); // Hora
-        tableArticulos.getColumnModel().getColumn(7).setPreferredWidth(80); // Acciones
+        tableArticulos.getColumnModel().getColumn(0).setPreferredWidth(60); // Articulo
+        tableArticulos.getColumnModel().getColumn(1).setPreferredWidth(250); // Nombre
+        tableArticulos.getColumnModel().getColumn(2).setPreferredWidth(80); // Relacion
+        tableArticulos.getColumnModel().getColumn(3).setPreferredWidth(60); // Cantidad
+        tableArticulos.getColumnModel().getColumn(4).setPreferredWidth(40); // Unidad
+        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(40); // Costo Pza
+        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(60); // Cajas
+        tableArticulos.getColumnModel().getColumn(6).setPreferredWidth(40); // Unidad
+        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(60); // Costo Cja
+        tableArticulos.getColumnModel().getColumn(5).setPreferredWidth(60); // Costo Total
     }
 
     /**
@@ -198,6 +217,7 @@ public class Details extends javax.swing.JFrame {
         textProveedor = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableArticulos = new javax.swing.JTable();
+        btnDiscard = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -289,6 +309,15 @@ public class Details extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tableArticulos);
 
+        btnDiscard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnDiscard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/contents/discard25x25.png"))); // NOI18N
+        btnDiscard.setText("Descartar de la Lista");
+        btnDiscard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDiscardActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -334,18 +363,20 @@ public class Details extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(textProveedor))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 55, Short.MAX_VALUE)))
+                                .addComponent(textAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDiscard)
+                        .addGap(0, 342, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -358,7 +389,8 @@ public class Details extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(textReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3)
-                            .addComponent(textAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDiscard))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -386,49 +418,29 @@ public class Details extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(textProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDiscardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiscardActionPerformed
+        if (controllerPrincipal.discardMove(movimiento.getDocumento())) {
+            this.dispose();
+            principal.setEnabled(true);
+            principal.toFront();
+        }
+    }//GEN-LAST:event_btnDiscardActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Details(new Movimiento(), new Principal()).setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDiscard;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

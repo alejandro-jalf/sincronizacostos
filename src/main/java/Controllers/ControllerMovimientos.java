@@ -9,6 +9,7 @@ import com.alex96.sincronizacostos.Models.Movimiento;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -88,5 +89,18 @@ public class ControllerMovimientos {
     
     public Movimiento get(int position) {
         return listMovimientos.get(position);
+    }
+    
+    public boolean removeMovimiento(String Documento) {
+        int positionMove = -1;
+        for (int position = 0; position < listMovimientos.size(); position++) {
+            movimiento = listMovimientos.get(position);
+            if (movimiento.getDocumento().equals(Documento)) {
+                positionMove = position;
+                break;
+            }
+        }
+        if (positionMove != -1) listMovimientos.remove(positionMove);
+        return positionMove != -1;
     }
 }

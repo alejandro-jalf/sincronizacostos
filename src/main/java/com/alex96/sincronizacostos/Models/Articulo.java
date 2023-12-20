@@ -21,6 +21,8 @@ public class Articulo { //
     private double CantidadRegular = 0;
     private double CantidadRegularUC = 0;
     private double UltimoCosto = 0;
+    private double CostoUnitarioNetoUC = 0;
+    private double CostoValorNeto = 0;
     private int Almacen = 0;
     private Date Fecha = null;
     private Date Hora = null;
@@ -127,5 +129,21 @@ public class Articulo { //
 
     public void setRelacion(String Relacion) {
         this.Relacion = Relacion;
+    }
+
+    public double getCostoUnitarioNetoUC() {
+        return CostoUnitarioNetoUC;
+    }
+
+    public void setCostoUnitarioNetoUC(double CostoUnitarioNetoUC) {
+        this.CostoUnitarioNetoUC = CostoUnitarioNetoUC;
+    }
+
+    public double getCostoValorNeto() {
+        return CostoValorNeto;
+    }
+
+    public void setCostoValorNeto(double CostoValorNeto) {
+        this.CostoValorNeto = CostoValorNeto;
     }
 }
