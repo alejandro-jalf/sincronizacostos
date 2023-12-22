@@ -58,9 +58,9 @@ public class Movimientos {
                     Documento, Referencia, NombreTercero, D.Articulo, D.Nombre, DescripcionAlmacen, Fecha, Hora, CostoUnitarioNeto, L.UltimoCosto, D.Almacen,
                     Diferencia = ABS(D.CostoUnitario-L.UltimoCosto), D.CantidadRegularUC, L.UnidadCompra, CantidadRegular, L.UnidadVenta,
                     Relacion = CAST(CAST(L.FactorCompra AS INT) AS NVARCHAR) + '/' + L.UnidadCompra + ' - ' + CAST(CAST(L.FactorVenta AS INT) AS NVARCHAR) + '/' + L.UnidadVenta,
-                    D.NombreCajero, D.Observaciones, D.Caja, D.CostoUnitarioNetoUC, D.CostoValorNeto
+                    D.NombreCajero, D.Observaciones, D.Caja, D.CostoUnitarioNetoUC, D.CostoValorNeto, D.CostoUnitario, L.DescAlmacen, AlmacenArticulo = L.Almacen
                 FROM QVDEMovAlmacen D
-                LEFT JOIN QVExistencias L ON D.Articulo = L.Articulo AND D.Tienda = L.Tienda AND D.Almacen = L.Almacen
+                LEFT JOIN QVExistencias L ON D.Articulo = L.Articulo AND D.Tienda = L.Tienda AND (D.Almacen = @Almacen1 OR D.Almacen = @Almacen2)
                 WHERE D.Fecha = @Fecha AND D.TipoDocumento IN ('C', 'E') AND (D.Almacen = @Almacen1 OR D.Almacen = @Almacen2)
                 ORDER BY Documento DESC, Fecha, Hora; """
             );
@@ -89,6 +89,9 @@ public class Movimientos {
                 row.put("Caja", resultSet.getString("Caja"));
                 row.put("CostoUnitarioNetoUC", resultSet.getDouble("CostoUnitarioNetoUC"));
                 row.put("CostoValorNeto", resultSet.getDouble("CostoValorNeto"));
+                row.put("CostoUnitario", resultSet.getDouble("CostoUnitario"));
+                row.put("DescAlmacen", resultSet.getString("DescAlmacen"));
+                row.put("AlmacenArticulo", resultSet.getString("AlmacenArticulo"));
                 
                 data.put(row);
             }

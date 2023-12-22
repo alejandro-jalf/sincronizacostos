@@ -178,6 +178,7 @@ public class ControllerPrincipal {
             data = response.getJSONArray("data");
             controllerMovimientos.resetMovimientos();
             dataArticles = new ArrayList<>();
+            joinCosts(data);
             
             for (int position = 0; position < data.length(); position++) {
                 row = data.getJSONObject(position);
@@ -187,6 +188,32 @@ public class ControllerPrincipal {
             insertListArticlesIntoMovimiento();
            return true;
         }
+    }
+    
+    private boolean joinCosts(JSONArray data) {
+        JSONArray newData = new JSONArray();
+        JSONObject row, newRow;
+        boolean exist = false;
+        System.out.println("Tamaño de data: " + data.length());
+        for (int position = 0; position < data.length(); position++) {
+            row = data.getJSONObject(position);
+            exist = false;
+            for (int newPosition = 0; newPosition < newData.length(); newPosition++) {
+                newRow = newData.getJSONObject(newPosition);
+                if (
+                    row.getString("Documento").equals(newRow.getString("Documento")) &&
+                    row.getString("Articulo").equals(newRow.getString("Articulo")) &&
+                    row.getDouble("CostoUnitario") == newRow.getDouble("CostoUnitario") &&
+                    row.getDouble("CantidadRegular") == newRow.getDouble("CantidadRegular")
+                ) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) newData.put(row);
+        }
+        System.out.println(newData.length());
+        return false;
     }
     
     private void loadListMoves(JSONObject rowData) {
