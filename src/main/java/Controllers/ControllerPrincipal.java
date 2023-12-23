@@ -207,10 +207,21 @@ public class ControllerPrincipal {
                     row.getDouble("CantidadRegular") == newRow.getDouble("CantidadRegular")
                 ) {
                     exist = true;
+                    if (row.getString("AlmacenArticulo").equals("12")) {
+                        newRow.put("CostoAlmacenSuper", row.getDouble("UltimoCosto"));
+                    } else if (row.getString("AlmacenArticulo").equals("11")) {
+                        newRow.put("CostoAlmacenBodega", row.getDouble("UltimoCosto"));
+                    }
                     break;
                 }
             }
-            if (!exist) newData.put(row);
+            if (!exist) {
+                if (row.getString("AlmacenArticulo").equals("12"))
+                    row.put("CostoAlmacenSuper", row.getDouble("UltimoCosto"));
+                else if (row.getString("AlmacenArticulo").equals("11"))
+                    row.put("CostoAlmacenBodega", row.getDouble("UltimoCosto"));
+                newData.put(row);
+            }
         }
         System.out.println(newData.length());
         return false;

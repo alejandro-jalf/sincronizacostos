@@ -78,6 +78,8 @@ public class Movimientos {
                 row.put("CostoUnitario", resultSet.getDouble("CostoUnitarioNeto"));
                 row.put("UltimoCosto", resultSet.getDouble("UltimoCosto"));
                 row.put("Almacen", resultSet.getDouble("Almacen"));
+                row.put("CostoAlmacenSuper", -1);
+                row.put("CostoAlmacenBodega", -1);
                 row.put("Diferencia", resultSet.getDouble("Diferencia"));
                 row.put("CantidadRegularUC", resultSet.getDouble("CantidadRegularUC"));
                 row.put("UnidadCompra", resultSet.getString("UnidadCompra"));
