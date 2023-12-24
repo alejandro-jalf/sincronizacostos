@@ -194,7 +194,6 @@ public class ControllerPrincipal {
         JSONArray newData = new JSONArray();
         JSONObject row, newRow;
         boolean exist = false;
-        System.out.println("Tamaño de data: " + data.length());
         for (int position = 0; position < data.length(); position++) {
             row = data.getJSONObject(position);
             exist = false;
@@ -223,7 +222,7 @@ public class ControllerPrincipal {
                 newData.put(row);
             }
         }
-        System.out.println(newData.length());
+        data = newData;
         return false;
     }
     
@@ -270,8 +269,13 @@ public class ControllerPrincipal {
             rowData.getString("UnidadVenta"),
             rowData.getDouble("CantidadRegularUC"),
             rowData.getDouble("CostoUnitarioNetoUC"),
-            rowData.getDouble("CostoValorNeto")
+            rowData.getDouble("CostoValorNeto"),
+            rowData.getDouble("CostoAlmacenSuper"),
+            rowData.getDouble("CostoAlmacenBodega"),
+            rowData.getDouble("CostoAlmacenSuper") - rowData.getDouble("CostoAlmacenBodega")
         );
+        System.out.print("Diferencia: ");
+        System.out.println((double)(rowData.getDouble("CostoAlmacenSuper") - rowData.getDouble("CostoAlmacenBodega")));
         if (!existDocument) {
             dataArticles.add(controllerTemp);
         }

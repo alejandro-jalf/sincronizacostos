@@ -23,6 +23,9 @@ public class Articulo { //
     private double UltimoCosto = 0;
     private double CostoUnitarioNetoUC = 0;
     private double CostoValorNeto = 0;
+    private double CostoAlmacenSuper = 0;
+    private double CostoAlmacenBodega = 0;
+    private double Diferencia = 0;
     private int Almacen = 0;
     private Date Fecha = null;
     private Date Hora = null;
@@ -145,5 +148,29 @@ public class Articulo { //
 
     public void setCostoValorNeto(double CostoValorNeto) {
         this.CostoValorNeto = CostoValorNeto;
+    }
+
+    public double getCostoAlmacenSuper() {
+        return CostoAlmacenSuper;
+    }
+
+    public void setCostoAlmacenSuper(double CostoAlmacenSuper) {
+        this.CostoAlmacenSuper = CostoAlmacenSuper;
+    }
+
+    public double getCostoAlmacenBodega() {
+        return CostoAlmacenBodega;
+    }
+
+    public void setCostoAlmacenBodega(double CostoAlmacenBodega) {
+        this.CostoAlmacenBodega = CostoAlmacenBodega;
+    }
+
+    public double getDiferencia() {
+        return Diferencia;
+    }
+
+    public void setDiferencia(double Diferencia) {
+        this.Diferencia = Diferencia;
     }
 }
