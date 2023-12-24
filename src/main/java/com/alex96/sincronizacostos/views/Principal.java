@@ -15,6 +15,7 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -196,23 +197,46 @@ public class Principal extends javax.swing.JFrame {
 
         menuArchivo.setText("Archivo");
 
+        menuItemSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+        menuItemSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/contents/power25x25.png"))); // NOI18N
         menuItemSalir.setText("Salir");
+        menuItemSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSalirActionPerformed(evt);
+            }
+        });
         menuArchivo.add(menuItemSalir);
 
         jMenuBar1.add(menuArchivo);
 
         menuAcciones.setText("Acciones");
 
+        menuItemCargar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        menuItemCargar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/contents/refresh225x25.png"))); // NOI18N
         menuItemCargar.setText("Cargar Movimientos");
+        menuItemCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCargarActionPerformed(evt);
+            }
+        });
         menuAcciones.add(menuItemCargar);
 
+        menuItemSincronizar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        menuItemSincronizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/contents/compare25x25.png"))); // NOI18N
         menuItemSincronizar.setText("Sincronizar Costos");
+        menuItemSincronizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSincronizarActionPerformed(evt);
+            }
+        });
         menuAcciones.add(menuItemSincronizar);
 
         jMenuBar1.add(menuAcciones);
 
         menuAyuda.setText("Ayuda");
 
+        menuItemAyuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+        menuItemAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/contents/help25x25.png"))); // NOI18N
         menuItemAyuda.setText("Ayuda");
         menuAyuda.add(menuItemAyuda);
 
@@ -283,6 +307,29 @@ public class Principal extends javax.swing.JFrame {
     private void btnSincronizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSincronizaActionPerformed
         cp.igualaCostos();
     }//GEN-LAST:event_btnSincronizaActionPerformed
+
+    private void menuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSalirActionPerformed
+        int result = JOptionPane.showOptionDialog(
+                this,
+                "¿Quiere cerrar la aplicacion?",
+                "Cerrando",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new Object[] { "Si", "No"},
+                "SI"
+            );
+            if (result == JOptionPane.YES_OPTION)
+                System.exit(0);
+    }//GEN-LAST:event_menuItemSalirActionPerformed
+
+    private void menuItemCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCargarActionPerformed
+        btnLoadMovimientos.doClick();
+    }//GEN-LAST:event_menuItemCargarActionPerformed
+
+    private void menuItemSincronizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSincronizarActionPerformed
+        btnSincroniza.doClick();
+    }//GEN-LAST:event_menuItemSincronizarActionPerformed
 
     /**
      * @param args the command line arguments
