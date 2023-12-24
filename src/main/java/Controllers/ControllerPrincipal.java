@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import com.alex96.sincronizacostos.Models.Articulo;
 import com.alex96.sincronizacostos.Models.Movimiento;
 import com.alex96.sincronizacostos.Models.Movimientos;
 import com.alex96.sincronizacostos.utils.Conexion;
@@ -43,6 +44,7 @@ public class ControllerPrincipal {
     private DefaultTableModel model;
     private JTable tableMovimientos;
     private ArrayList<ControllerArticulos> dataArticles;
+    private ControllerArticulos distinctArticles;
     private JButton btnSincroniza;
 
     public ControllerPrincipal(DefaultTableModel model, JTable tableMovimientos, Principal principal, JButton btnSincroniza) {
@@ -163,7 +165,6 @@ public class ControllerPrincipal {
         tableMovimientos.getColumnModel().getColumn(6).setPreferredWidth(60); // Hora
         tableMovimientos.getColumnModel().getColumn(7).setPreferredWidth(20); // Eliminar
         tableMovimientos.getColumnModel().getColumn(8).setPreferredWidth(20); // Abrir
-//        tableMovimientos.getColumnModel().getColumn(7).setCellRenderer(new CellRendererPane());
     }
     
     private boolean loadMoves(String fecha) {
@@ -222,7 +223,8 @@ public class ControllerPrincipal {
                 newData.put(row);
             }
         }
-        data = newData;
+        
+        this.data = newData;
         return false;
     }
     
@@ -274,8 +276,6 @@ public class ControllerPrincipal {
             rowData.getDouble("CostoAlmacenBodega"),
             rowData.getDouble("CostoAlmacenSuper") - rowData.getDouble("CostoAlmacenBodega")
         );
-        System.out.print("Diferencia: ");
-        System.out.println((double)(rowData.getDouble("CostoAlmacenSuper") - rowData.getDouble("CostoAlmacenBodega")));
         if (!existDocument) {
             dataArticles.add(controllerTemp);
         }
@@ -295,5 +295,64 @@ public class ControllerPrincipal {
                 }
             }
         }
+    }
+    
+    public void igualaCostos() {
+        if (controllerMovimientos.getSize() != 0) {
+            SimpleDateFormat sd = new SimpleDateFormat("dd/MM/YYYY");
+            String Fecha = sd.format(controllerMovimientos.get(0).getFecha());
+            
+            int result = JOptionPane.showOptionDialog(
+                principal,
+                "¿Quiere sincronizar los costos de la fecha \"" + Fecha + "\"?",
+                "Sincronizando Costos",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new Object[] { "Si", "No"},
+                "NO"
+            );
+            if (result == JOptionPane.YES_OPTION) {
+                loadDistintcArticles();
+                ControllerArticulos caDiferences = getArticlesWithDiference();
+                if (caDiferences.getSize() > 0)
+                    JOptionPane.showMessageDialog(principal, "Hay diferencia de costo en " + caDiferences.getSize() + " articulos", "Difrencias", JOptionPane.WARNING_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(principal, "No se encontraron diferencias en los costos del almacen de Bodega y de Super", "Sincronizado", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else
+            JOptionPane.showMessageDialog(principal, "No se encontraron documentos cargados", "Lista vacia", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    private void loadDistintcArticles() {
+        if (controllerMovimientos.getSize() != 0) {
+            distinctArticles = new ControllerArticulos();
+            ArrayList<Articulo> listArticlesTemp = null;
+            boolean exist = false;
+            
+            for (Movimiento movimiento : controllerMovimientos.getList()) {
+                listArticlesTemp = movimiento.getListArticulos();
+                for (Articulo articulo : listArticlesTemp) {
+                    exist = false;
+                    for (Articulo articleDistintc : distinctArticles.getList()) {
+                        if (articleDistintc.getArticulo().equals(articulo.getArticulo())){
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (!exist) distinctArticles.addArticle(articulo);
+                }
+            }
+        } else
+            JOptionPane.showMessageDialog(principal, "No se encontraron documentos cargados", "Lista vacia", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    private ControllerArticulos getArticlesWithDiference() {
+        ControllerArticulos cnTemp = new ControllerArticulos();
+        for (Articulo articulo : distinctArticles.getList()) {
+            if (Math.abs(articulo.getDiferencia()) >= 0.1)
+                cnTemp.addArticle(articulo);
+        }
+        return cnTemp;
     }
 }

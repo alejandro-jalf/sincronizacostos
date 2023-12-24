@@ -51,6 +51,10 @@ public class ControllerArticulos {
         this.listArticulos.add(articulo);
     }
     
+    public void addArticle(Articulo articulo) {
+        this.listArticulos.add(articulo);
+    }
+    
     public Articulo getArticulo(String Articulo) {
         this.articulo = null;
         for (Articulo articulo : listArticulos) {

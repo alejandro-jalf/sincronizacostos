@@ -166,6 +166,11 @@ public class Principal extends javax.swing.JFrame {
 
         btnSincroniza.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnSincroniza.setText("Sincronizar");
+        btnSincroniza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSincronizaActionPerformed(evt);
+            }
+        });
 
         btnLoadMovimientos.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnLoadMovimientos.setText("Cargar Movimientos");
@@ -274,6 +279,10 @@ public class Principal extends javax.swing.JFrame {
             cp.loadTable(sd.format(selectDate.getCalendar().getTime()));
         }
     }//GEN-LAST:event_btnLoadMovimientosActionPerformed
+
+    private void btnSincronizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSincronizaActionPerformed
+        cp.igualaCostos();
+    }//GEN-LAST:event_btnSincronizaActionPerformed
 
     /**
      * @param args the command line arguments
